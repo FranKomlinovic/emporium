@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="fran.komlinovic" id="1">
+        <createTable tableName="CONTACT_TYPE">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="PAYMENT_TYPE">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="PAYMENT">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXECUTIVE_NUMBER" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <!--            <column name="DATE" type="INVOICE">-->
+            <!--                <constraints nullable="false" foreignKeyName="FK_INVOICE" references="invoice(id)"/>-->
+            <!--            </column>-->
+            <column name="AMOUNT" type="DECIMAL">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="BUSINESS_YEAR">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="YEAR" type="INT(4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ACTIVE" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="CONTACT">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="CONTACT_TYPE" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_contact_type" references="contact_type(id)"/>
+            </column>
+            <column name="CONTACT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="ADDRESS">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="COUNTRY" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CITY" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSTAL_CODE" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STREET_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HOUSE_NUMBER" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="OFFICE">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ADDRESS" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_address" references="address(id)"/>
+            </column>
+            <column name="LABEL" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="PARTNER">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="OIB" type="VARCHAR(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="OPERATOR">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="OIB" type="VARCHAR(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FIRSTNAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LASTNAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LABEL" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="QUANTITY_TYPE">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ABBREVIATION" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="PRODUCT">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRICE" type="DECIMAL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEFAULT_QUANTITY_TYPE" type="VARCHAR(255)">
+                <constraints nullable="false" foreignKeyName="fk_quantity_type" references="QUANTITY_TYPE(id)"/>
+            </column>
+        </createTable>
+        <createTable tableName="INVOICE">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="CREATION_DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DELIVERY_DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DUE_DATE" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INVOICE_NUMBER" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REMARK" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BUSINESS_YEAR" type="INT">
+                <constraints nullable="false" foreignKeyName="FK_INVOICE_BUSINESS_YEAR" references="BUSINESS_YEAR(id)"/>
+            </column>
+            <column name="OFFICE" type="INT">
+                <constraints nullable="false" foreignKeyName="FK_INVOICE_OFFICE" references="OFFICE(id)"/>
+            </column>
+            <column name="OPERATOR" type="INT">
+                <constraints nullable="false" foreignKeyName="FK_INVOICE_OPERATOR" references="OPERATOR(id)"/>
+            </column>
+            <column name="PAYMENT_TYPE" type="INT">
+                <constraints nullable="false" foreignKeyName="FK_INVOICE_PAYMENT_TYPE" references="PAYMENT_TYPE(id)"/>
+            </column>
+            <column name="PARTNER" type="INT">
+                <constraints nullable="false" foreignKeyName="FK_INVOICE_PARTNER" references="PARTNER(id)"/>
+            </column>
+        </createTable>
+
+
+        <rollback>
+            <dropTable tableName="CONTACT_TYPE"/>
+            <dropTable tableName="PAYMENT_TYPE"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
